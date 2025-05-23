@@ -3,6 +3,31 @@ import java.util.Collections;
 import java.util.Scanner;
 
 public class Main {
+  public static void main(String[] args) {
+    Scanner in = new Scanner(System.in);
+    int n = in.nextInt();
+    int m = in.nextInt();
+    ArrayList<Edge> graph = new ArrayList<>();
+    for (int i = 0; i < m; i++) {
+      int u = in.nextInt();
+      int v = in.nextInt();
+      int c = in.nextInt();
+      graph.add(new Edge(u, v, c));
+    }
+    Collections.sort(graph);
+    DSU dsu = new DSU(n);
+    long totalWeight = 0;
+    int edgesAdded = 0;
+    for (int i = 0; i < graph.size() && edgesAdded < n - 1; i++) {
+      Edge edge = graph.get(i);
+      if (dsu.union(edge.u, edge.v)) {
+        totalWeight += edge.c;
+        edgesAdded++;
+      }
+    }
+    System.out.println(totalWeight);
+  }
+  
   static class Edge implements Comparable<Edge> {
     int u;
     int v;
@@ -55,30 +80,5 @@ public class Main {
       }
       return true;
     }
-  }
-
-  public static void main(String[] args) {
-    Scanner in = new Scanner(System.in);
-    int n = in.nextInt();
-    int m = in.nextInt();
-    ArrayList<Edge> graph = new ArrayList<>();
-    for (int i = 0; i < m; i++) {
-      int u = in.nextInt();
-      int v = in.nextInt();
-      int c = in.nextInt();
-      graph.add(new Edge(u, v, c));
-    }
-    Collections.sort(graph);
-    DSU dsu = new DSU(n);
-    long totalWeight = 0;
-    int edgesAdded = 0;
-    for (int i = 0; i < graph.size() && edgesAdded < n - 1; i++) {
-      Edge edge = graph.get(i);
-      if (dsu.union(edge.u, edge.v)) {
-        totalWeight += edge.c;
-        edgesAdded++;
-      }
-    }
-    System.out.println(totalWeight);
   }
 }
