@@ -3,46 +3,6 @@ import java.util.Arrays;
 import java.util.Scanner;
 
 public class Main {
-  private static int module = 1000000000 + 7;
-
-  static boolean check(int prev, int curr, int n) {
-    for (int i = 0; i < n - 1; ++i) {
-      int sum =
-          ((prev >> i) & 1) + ((prev >> (i + 1)) & 1) + ((curr >> i) & 1) + ((curr >> (i + 1)) & 1);
-      if (sum != 2) return false;
-    }
-    return true;
-  }
-
-  static ArrayList<ArrayList<Integer>> buildMasks(String[] mtx, int n, int m) {
-    ArrayList<ArrayList<Integer>> masks = new ArrayList<>();
-    for (int i = 0; i < m; ++i) {
-      int val = 0;
-      int free = 0;
-      for (int j = 0; j < n; ++j) {
-        char c = mtx[j].charAt(i);
-        if (c != '.') {
-          if (c == '+') val |= (1 << j);
-        } else free |= (1 << j);
-      }
-      int cnt = Integer.bitCount(free);
-      ArrayList<Integer> lst = new ArrayList<>();
-      for (int b = 0; b < (1 << cnt); ++b) {
-        int mask = val;
-        int tmp = b;
-        for (int j = 0; j < n; ++j) {
-          if ((free & (1 << j)) != 0) {
-            mask |= (tmp & 1) << j;
-            tmp >>= 1;
-          }
-        }
-        lst.add(mask);
-      }
-      masks.add(lst);
-    }
-    return masks;
-  }
-
   public static void main(String[] args) {
     Scanner in = new Scanner(System.in);
     int n = in.nextInt();
@@ -84,5 +44,44 @@ public class Main {
       ans = (ans + dp[curr][mask]) % module;
     }
     System.out.println(ans);
+  }
+  private static int module = 1000000000 + 7;
+
+  static boolean check(int prev, int curr, int n) {
+    for (int i = 0; i < n - 1; ++i) {
+      int sum =
+          ((prev >> i) & 1) + ((prev >> (i + 1)) & 1) + ((curr >> i) & 1) + ((curr >> (i + 1)) & 1);
+      if (sum != 2) return false;
+    }
+    return true;
+  }
+
+  static ArrayList<ArrayList<Integer>> buildMasks(String[] mtx, int n, int m) {
+    ArrayList<ArrayList<Integer>> masks = new ArrayList<>();
+    for (int i = 0; i < m; ++i) {
+      int val = 0;
+      int free = 0;
+      for (int j = 0; j < n; ++j) {
+        char c = mtx[j].charAt(i);
+        if (c != '.') {
+          if (c == '+') val |= (1 << j);
+        } else free |= (1 << j);
+      }
+      int cnt = Integer.bitCount(free);
+      ArrayList<Integer> lst = new ArrayList<>();
+      for (int b = 0; b < (1 << cnt); ++b) {
+        int mask = val;
+        int tmp = b;
+        for (int j = 0; j < n; ++j) {
+          if ((free & (1 << j)) != 0) {
+            mask |= (tmp & 1) << j;
+            tmp >>= 1;
+          }
+        }
+        lst.add(mask);
+      }
+      masks.add(lst);
+    }
+    return masks;
   }
 }
