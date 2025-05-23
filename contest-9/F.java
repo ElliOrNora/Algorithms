@@ -7,57 +7,6 @@ import java.util.Queue;
 import java.util.Scanner;
 
 public class Main {
-    private static long maxFlow(List<List<Edge>> graph, int s, int t) {
-        long flow = 0;
-        int[] level = new int[graph.size()];
-        while (bfs(graph, s, t, level)) {
-            int[] ptr = new int[graph.size()];
-            while (true) {
-                long pushed = dfs(graph, ptr, level, s, t, Long.MAX_VALUE);
-                if (pushed == 0) {
-                    break;
-                }
-                flow += pushed;
-            }
-        }
-        return flow;
-    }
-
-    private static boolean bfs(List<List<Edge>> graph, int s, int t, int[] level) {
-        Arrays.fill(level, -1);
-        level[s] = 0;
-        Queue<Integer> q = new LinkedList<>();
-        q.add(s);
-        while (!q.isEmpty()) {
-            int u = q.poll();
-            for (Edge e : graph.get(u)) {
-                if (e.capacity > 0 && level[e.to] == -1) {
-                    level[e.to] = level[u] + 1;
-                    q.add(e.to);
-                }
-            }
-        }
-        return level[t] != -1;
-    }
-
-    private static long dfs(List<List<Edge>> graph, int[] ptr, int[] level, int u, int t, long flow) {
-        if (u == t) {
-            return flow;
-        }
-        for (; ptr[u] < graph.get(u).size(); ptr[u]++) {
-            Edge e = graph.get(u).get(ptr[u]);
-            if (e.capacity > 0 && level[e.to] == level[u] + 1) {
-                long pushed = dfs(graph, ptr, level, e.to, t, Math.min(flow, e.capacity));
-                if (pushed > 0) {
-                    e.capacity -= pushed;
-                    e.rev.capacity += pushed;
-                    return pushed;
-                }
-            }
-        }
-        return 0;
-    }
-
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
         int n = in.nextInt();
@@ -120,7 +69,57 @@ public class Main {
             System.out.println(sb);
         }
     }
+    
+    private static long maxFlow(List<List<Edge>> graph, int s, int t) {
+        long flow = 0;
+        int[] level = new int[graph.size()];
+        while (bfs(graph, s, t, level)) {
+            int[] ptr = new int[graph.size()];
+            while (true) {
+                long pushed = dfs(graph, ptr, level, s, t, Long.MAX_VALUE);
+                if (pushed == 0) {
+                    break;
+                }
+                flow += pushed;
+            }
+        }
+        return flow;
+    }
 
+    private static boolean bfs(List<List<Edge>> graph, int s, int t, int[] level) {
+        Arrays.fill(level, -1);
+        level[s] = 0;
+        Queue<Integer> q = new LinkedList<>();
+        q.add(s);
+        while (!q.isEmpty()) {
+            int u = q.poll();
+            for (Edge e : graph.get(u)) {
+                if (e.capacity > 0 && level[e.to] == -1) {
+                    level[e.to] = level[u] + 1;
+                    q.add(e.to);
+                }
+            }
+        }
+        return level[t] != -1;
+    }
+
+    private static long dfs(List<List<Edge>> graph, int[] ptr, int[] level, int u, int t, long flow) {
+        if (u == t) {
+            return flow;
+        }
+        for (; ptr[u] < graph.get(u).size(); ptr[u]++) {
+            Edge e = graph.get(u).get(ptr[u]);
+            if (e.capacity > 0 && level[e.to] == level[u] + 1) {
+                long pushed = dfs(graph, ptr, level, e.to, t, Math.min(flow, e.capacity));
+                if (pushed > 0) {
+                    e.capacity -= pushed;
+                    e.rev.capacity += pushed;
+                    return pushed;
+                }
+            }
+        }
+        return 0;
+    }
     static class Edge {
         int to;
         Edge rev;
