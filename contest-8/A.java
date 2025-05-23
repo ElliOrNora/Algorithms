@@ -5,34 +5,6 @@ import java.util.Scanner;
 import java.util.Stack;
 
 public class Main {
-  static class Edge {
-    int to;
-    long cost;
-    long time;
-
-    Edge(int t, long c, long tm) {
-      to = t; cost = c; time = tm;
-    }
-  }
-
-  static class Node implements Comparable<Node> {
-    int vertex;
-    long totalCost;
-    long totalTime;
-    Node parent;
-
-    Node(int v, long c, long t, Node p) { 
-      vertex = v;
-      totalCost = c;
-      totalTime = t;
-      parent = p;
-    }
-
-    public int compareTo(Node other) { 
-      return Long.compare(totalCost, other.totalCost);
-    }
-  }
-
   public static void main(String[] args) {
     Scanner in = new Scanner(System.in);
     int n = in.nextInt();
@@ -80,6 +52,34 @@ public class Main {
       System.out.println(path.size());
       while (!path.isEmpty()) System.out.print(path.pop() + " ");
       System.out.println();
+    }
+  }
+  
+  static class Edge {
+    int to;
+    long cost;
+    long time;
+
+    Edge(int t, long c, long tm) {
+      to = t; cost = c; time = tm;
+    }
+  }
+
+  static class Node implements Comparable<Node> {
+    int vertex;
+    long totalCost;
+    long totalTime;
+    Node parent;
+
+    Node(int v, long c, long t, Node p) { 
+      vertex = v;
+      totalCost = c;
+      totalTime = t;
+      parent = p;
+    }
+
+    public int compareTo(Node other) { 
+      return Long.compare(totalCost, other.totalCost);
     }
   }
 }
