@@ -3,18 +3,6 @@ import java.util.Arrays;
 import java.util.Scanner;
 
 public class Main {
-  static class Edge {
-    int from;
-    int to;
-    int weight;
-
-    Edge(int from, int to, int weight) {
-      this.from = from;
-      this.to = to;
-      this.weight = weight;
-    }
-  }
-
   public static void main(String[] args) {
     Scanner in = new Scanner(System.in);
     int n = in.nextInt();
@@ -71,6 +59,18 @@ public class Main {
       for (int j = cycle.size() - 1; j >= 0; j--) {
         System.out.print(cycle.get(j) + " ");
       }
+    }
+  }
+  
+  static class Edge {
+    int from;
+    int to;
+    int weight;
+
+    Edge(int from, int to, int weight) {
+      this.from = from;
+      this.to = to;
+      this.weight = weight;
     }
   }
 }
